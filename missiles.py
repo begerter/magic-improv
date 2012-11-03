@@ -73,7 +73,7 @@ class Player(pygame.sprite.Sprite):
 class Bullet(pygame.sprite.Sprite):
     def __init__(self,x,y,index,indrange):
         pygame.sprite.Sprite.__init__(self)
-        self.image, self.rect = load_image('smallEnemy.png',-1)
+        self.image, self.rect = load_image('tinymullet2.png',-1)
         screen = pygame.display.get_surface()
         self.area = screen.get_rect()
         self.rect.topleft = x,y
