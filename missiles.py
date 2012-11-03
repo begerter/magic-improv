@@ -94,6 +94,10 @@ class Missiles(object):
         self.spawnrate = 1
         self.missiles = []
         self.playersprite = pygame.sprite.RenderPlain(self.player)
+    def reset(self):
+        self.timer = 0
+        self.missiles.clear()
+        return True
     def update(self, **kwargs):
         self.player.update()
         for event in pygame.event.get():
@@ -104,7 +108,7 @@ class Missiles(object):
                     #if missile.rect.collidepoint(pygame.mouse.get_pos()):
         for missile in self.missiles:
             if missile.rect.colliderect(self.player.rect):
-                terminate()                
+                return False               
         self.timer += 1
         self.spawnrate = max(1,self.spawnrate - (0.000025 * self.timer))
         if self.timer % int(self.spawnrate) == 0:
