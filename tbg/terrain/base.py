@@ -15,6 +15,7 @@ class Base(pygame.sprite.Sprite):
     self.image = loaded[image]
     self.rect = pygame.rect.Rect(board.pos(loc), self.image.get_size())
     self.loc = loc
+    self.left = 0
     self.clear()
   def clear(self):
     self.over = [False, False, False]
@@ -31,6 +32,7 @@ class Base(pygame.sprite.Sprite):
     for i,v in enumerate(self.over):
       if v: break
     else: return
+    if i == 1 and self.loc in self.board.units: return
     color = COLORS[i]
     select = pygame.Surface(tuple(i-1 for i in self.board.div))
     select.convert()
