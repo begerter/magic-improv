@@ -126,9 +126,13 @@ class Board(object):
           if event.type == QUIT:
             raise Exception("Quitting")
     elif result:
-      self.result[1].damage()
+      urange = sum(abs(i-j) for (i,j) in zip(self.result[0].loc,self.result[1].loc))
+      if self.result[0].range == urange:
+        self.result[1].damage()
     else:
-      self.result[0].damage()
+      urange = sum(abs(i-j) for (i,j) in zip(self.result[0].loc,self.result[1].loc))
+      if self.result[1].range == urange:
+        self.result[0].damage()
   def snap(self, pos):
     return tuple(i - (i % j) for (i, j) in zip(pos, self.div))
   def loc(self, pos):
