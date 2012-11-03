@@ -32,10 +32,10 @@ try:
         manager.update()
         manager.draw(screen)
 
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                running = False
-                break
+        #for event in pygame.event.get():
+        #    if event.type == QUIT:
+        #       running = False
+        #        break
 
         pygame.display.flip()
     pygame.quit()

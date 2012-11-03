@@ -45,10 +45,11 @@ class redlight(minigame.Minigame):
 
     def draw(self):
         self.background.fill((0,255,0))
+        draw_light()
         self.screen.blit(self.background, (0,0))
 
     def draw_light(self):
-        pygame.draw.rect(self.background, self.light, pygame.Rect(
+        pygame.draw.rect(self.background, self.light, pygame.Rect(375,0,50,50))
         
     def update(self):
         self.
