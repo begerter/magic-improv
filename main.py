@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-
+import sys
 # load resources
 
 # initialize
@@ -15,11 +15,9 @@ background = background.convert()
 background.fill((250,0,0))
 screen.blit(background, (0,0))
 
-
 #main loop
 while True:
-    clock.tick(60)
-    
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            break
+  clock.tick(60)
+  for event in pygame.event.get():
+    if event.type == QUIT:
+      sys.exit(0)
