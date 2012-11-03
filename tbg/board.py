@@ -3,7 +3,7 @@ from pygame.locals import *
 from sys import exit
 
 class Board(object):
-  def __init__(self, screen, clock):
+  def __init__(self, screen, clock, **kwargs):
     self.screen = screen
     self.clock  = clock
   def update(self):
