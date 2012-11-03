@@ -18,6 +18,7 @@ class Terrain(object):
     if loc in self.board.units:
       side = self.board.units[loc].side
       move = self.board.units[loc].movement
+      urange = self.board.units[loc].range
       heap = [ (0, loc) ]
       while heap:
         m, loc = heapq.heappop(heap)
@@ -29,6 +30,13 @@ class Terrain(object):
           m += self.table[loc].cost
           for i,j in ((1,0),(0,1),(-1,0),(0,-1)):
             heapq.heappush(heap, (m, (loc[0]+i,loc[1]+j)))
+        for i in range(0,urange+1):
+          j = urange - i
+          for si, sj in ((1,1),(1,-1),(-1,1),(-1,-1)):
+            try:
+              self.table[(loc[0]+i*si,loc[1]+j*sj)].attackable()
+            except KeyError:
+              pass
   def update(self):
     self.renderer.update()
   def draw(self, screen):

@@ -29,7 +29,7 @@ def load_sliced_sprites(self, w, h, filename):
 class Mullet(pygame.sprite.Sprite):
     def __init__(self,x,y,i):
         pygame.sprite.Sprite.__init__(self)
-        self.image, self.rect = load_image('enemy.png',-1)
+        self.image, self.rect = load_image('whackamullet.png',-1)
         screen = pygame.display.get_surface()
         self.area = screen.get_rect()
         self.rect.topleft = 300 + x*(self.image.get_width() + 50),225 + y*(50 + self.image.get_height())
@@ -54,11 +54,14 @@ class WhackAMullet(object):
         self.mulletlist = []
         self.counter = 0
     def reset(self):
-        self.mullets.clear()
+        self.counter = 0
+        self.mullets = [0,0,0,0,0,0,0,0,0]
+        self.score = 0
+        self.mulletlist = []
         return True
     def update(self, **kwargs):
         self.counter += 1
-        if self.counter > 300:
+        if self.counter > 500:
             if self.score > 1000:
                 return True
             return False
@@ -82,6 +85,7 @@ class WhackAMullet(object):
                     if mullet.rect.collidepoint(pygame.mouse.get_pos()):
                         self.score += 100
                         self.mullets[mullet.index] = 0
+                        self.mulletlist.remove(mullet)
             for mullet in self.mulletlist:
                 mullet.update()          
 

@@ -73,7 +73,7 @@ class Player(pygame.sprite.Sprite):
 class Missile(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image, self.rect = load_image('smallEnemy.png',-1)
+        self.image, self.rect = load_image('tinymullet.png',-1)
         screen = pygame.display.get_surface()
         self.area = screen.get_rect()
         self.rect.topleft = screen.get_width(), random.randint(0,screen.get_height() - self.rect.height)
@@ -89,6 +89,7 @@ class Missiles(object):
         self.background = self.background.convert()
         self.background.fill((0,0,0))
         self.screen.blit(self.background, (0,0))
+        self.counter = 0
         pygame.display.flip()
         self.timer = 0
         self.spawnrate = 1
@@ -96,9 +97,19 @@ class Missiles(object):
         self.playersprite = pygame.sprite.RenderPlain(self.player)
     def reset(self):
         self.timer = 0
-        self.missiles.clear()
-        return True
+        self.player.up = False
+        self.player.down = False
+        self.player.left = False
+        self.player.right = False
+        for missile in self.missiles:
+            self.missiles.remove(missile)
+        self.missiles = []
+        return False
     def update(self, **kwargs):
+        counter += 1
+        if counter > 1200:
+            self.reset()
+            return True
         self.player.update()
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -108,7 +119,8 @@ class Missiles(object):
                     #if missile.rect.collidepoint(pygame.mouse.get_pos()):
         for missile in self.missiles:
             if missile.rect.colliderect(self.player.rect):
-                return False               
+                self.reset()
+                return False
         self.timer += 1
         self.spawnrate = max(1,self.spawnrate - (0.000025 * self.timer))
         if self.timer % int(self.spawnrate) == 0:
