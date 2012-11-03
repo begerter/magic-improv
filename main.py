@@ -5,7 +5,7 @@ import sys
 
 # initialize
 pygame.init()
-screen = pygame.display.set_mode((468, 60))
+screen = pygame.display.set_mode((468, 120))
 pygame.mouse.set_visible(0)
 clock = pygame.time.Clock()
 
@@ -15,9 +15,11 @@ background = background.convert()
 background.fill((250,0,0))
 screen.blit(background, (0,0))
 
+from tbg.board import Board
+board = Board(screen, clock)
 #main loop
 while True:
   clock.tick(60)
-  for event in pygame.event.get():
-    if event.type == QUIT:
-      sys.exit(0)
+  board.update()
+  board.draw()
+
