@@ -123,7 +123,7 @@ class Missiles(object):
                 self.reset()
                 return False
         self.timer += 1
-        self.missiles.append(Missile(random.randint(2,5) + 0.03*random.randint(1,self.timer)))
+        self.missiles.append(Missile(random.randint(2,5) + 0.1*random.randint(1,self.timer)))
         for missile in self.missiles:
             missile.update()
             if missile.rect.right < 0:

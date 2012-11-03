@@ -19,10 +19,10 @@ class Manager:
         self.minigames = []
         self.board = Board(screen=screen, clock=clock)
         self.minigames.append(Missiles(screen=screen,clock=clock))
-        self.minigames.append(WhackAMullet(screen=screen,clock=clock))
-        self.minigames.append(Freeze(screen=screen,clock=clock))
-        self.minigames.append(EasyWin(screen))
-        self.minigames.append(ClickClack(screen))
+        #self.minigames.append(WhackAMullet(screen=screen,clock=clock))
+        #self.minigames.append(Freeze(screen=screen,clock=clock))
+        #self.minigames.append(EasyWin(screen))
+        #self.minigames.append(ClickClack(screen))
         self.current = self.board
         self.catcher = None
         self.wait = 7
