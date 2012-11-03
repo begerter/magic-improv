@@ -31,6 +31,7 @@ class Base(pygame.sprite.Sprite):
     for i,v in enumerate(self.over):
       if v: break
     else: return
+    if i == 1 and self.loc in self.board.units: return
     color = COLORS[i]
     select = pygame.Surface(tuple(i-1 for i in self.board.div))
     select.convert()
