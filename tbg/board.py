@@ -30,28 +30,30 @@ class Board(object):
     for i in xrange(0, size[1], div[1]):
       pygame.draw.line(self.background, (0,0,0), (0, i), (size[0], i))
   def update(self, result=None, **kwargs):
-    self.mouse.tick()
-    loc = self.loc(self.mouse.pos)
-    for i in range(0, 2):
-      if self.mouse.clicked(i):
-        if self.selected == loc:
-          self.selected = None
-        elif self.selected is None and loc in self.units:
-          self.selected = loc
-        elif loc in self.units:
-          result = (self.units[self.selected], self.units[loc])
-          self.selected = None
-          return result
-        elif self.selected:
-          self.units[self.selected].move(loc)
-          self.units[loc] = self.units[self.selected]
-          del self.units[self.selected]
-          self.selected = None
-    self.sprites.update()
-    # eat queue becuase why not
-    for event in pygame.event.get():
-      if event.type == QUIT:
-        raise Exception("Quitting")
+    try:
+      self.mouse.tick()
+      loc = self.loc(self.mouse.pos)
+      for i in range(0, 2):
+        if self.mouse.clicked(i):
+          if self.selected == loc:
+            self.selected = None
+          elif self.selected is None and loc in self.units:
+            self.selected = loc
+          elif loc in self.units:
+            result = (self.units[self.selected], self.units[loc])
+            self.selected = None
+            return result
+          elif self.selected:
+            self.units[self.selected].move(loc)
+            self.units[loc] = self.units[self.selected]
+            del self.units[self.selected]
+            self.selected = None
+      self.sprites.update()
+    finally:
+      # eat queue becuase why not
+      for event in pygame.event.get():
+        if event.type == QUIT:
+          raise Exception("Quitting")
   def snap(self, pos):
     return tuple(i - (i % j) for (i, j) in zip(pos, self.div))
   def loc(self, pos):
