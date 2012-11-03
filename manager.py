@@ -3,6 +3,7 @@ import minigame
 from missiles import Missiles
 from easywin import EasyWin
 from tbg.board import Board
+from clickclack import ClickClack
 import random
 
 _TBG = "tbg"
@@ -17,6 +18,7 @@ class Manager:
         self.board = Board(screen=screen, clock=clock)
         self.minigames.append(Missiles(screen=screen,clock=clock))
         self.minigames.append(EasyWin(screen))
+        self.minigames.append(ClickClack(screen))
         self.current = self.board
         self.catcher = None
         self.wait = 7
