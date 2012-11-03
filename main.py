@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+import manager as man
 
 # load resources
 
@@ -8,6 +9,7 @@ pygame.init()
 screen = pygame.display.set_mode((468, 60))
 pygame.mouse.set_visible(0)
 clock = pygame.time.Clock()
+manager = man.Manager()
 
 # setup display
 background = pygame.Surface(screen.get_size())
@@ -22,4 +24,7 @@ while True:
     
     for event in pygame.event.get():
         if event.type == QUIT:
-            break
+            exit
+
+    manager.update()
+    manager.draw(screen)
