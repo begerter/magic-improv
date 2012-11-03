@@ -89,6 +89,7 @@ class Missiles(object):
         self.background = self.background.convert()
         self.background.fill((0,0,0))
         self.screen.blit(self.background, (0,0))
+        self.back, self.backRect = load_image('bullethellbg.png',-1)
         self.counter = 0
         pygame.display.flip()
         self.timer = 0
@@ -132,6 +133,7 @@ class Missiles(object):
 
     def draw(self, **kwargs):
         self.screen.blit(self.background, (0,0))
+        self.screen.blit(self.back, self.backRect)
         allsprites = pygame.sprite.RenderPlain(self.missiles)
         self.playersprite.draw(self.screen)
         allsprites.draw(self.screen)
