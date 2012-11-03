@@ -7,7 +7,7 @@ import sys
 
 # initialize
 pygame.init()
-screen = pygame.display.set_mode((468, 60))
+screen = pygame.display.set_mode((800, 600))
 pygame.mouse.set_visible(1)
 clock = pygame.time.Clock()
 manager = man.Manager(screen=screen, clock=clock)
