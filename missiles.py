@@ -106,8 +106,8 @@ class Missiles(object):
         self.missiles = []
         return False
     def update(self, **kwargs):
-        counter += 1
-        if counter > 1200:
+        self.counter += 1
+        if self.counter > 1200:
             self.reset()
             return True
         self.player.update()
