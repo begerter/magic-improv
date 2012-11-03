@@ -126,7 +126,7 @@ class Player(pygame.sprite.Sprite):
                 new.right = cell.left
             if 'r' in blockers and last.left >= cell.right and new.left < cell.right:
                 new.left = cell.right
-            if 't' in blockers and last.bottom <= cell.top and new.bottom > cell.top:
+            if 't' in blockers and last.bottom <= cell.top and new.bottom >= cell.top:
                 self.resting = True
                 new.bottom = cell.top
                 # reset the vertical speed if we land or hit the roof; this

@@ -1,4 +1,4 @@
-import pygame
+import pygame, os
 import minigame
 import random
 
@@ -18,7 +18,7 @@ class ClickClack(minigame.Minigame):
         def update(self):
             """ returns true if it needs to be dissappeared"""
             self.y += 2
-            return self.y > 700
+            return self.y > 500
         
         def draw(self, bg):
             bg.blit(self.text, (self.textRect[0]+self.x,self.textRect[1]+self.y,
@@ -36,8 +36,21 @@ class ClickClack(minigame.Minigame):
         self.baseSpawn = 5
         self.toSpawn = self.baseSpawn
         self.score = 0
+        self.killed = 0
         self.wordlist = ["mullet", "mullet", "mullet", "mullet", "help", "mullet",\
                          "save me", "mullet", "mullet"]
+        try:
+            self.noprotag = pygame.image.load(os.path.join('assets','noprotag.png'))
+            self.nomullet = pygame.image.load(os.path.join('assets', 'nomullet.png'))
+            self.yesprotag = pygame.image.load(os.path.join('assets', 'yesprotag.png'))
+            self.yesmullet = pygame.image.load(os.path.join('assets', 'yesmullet.png'))
+            self.noprotag = self.noprotag.convert()
+            self.nomullet = self.nomullet.convert()
+            self.yesprotag = self.yesprotag.convert()
+            self.yesmullet = self.yesmullet.convert()
+        except pygame.error, message:
+            print "Cannot load image"
+            raise SystemExit, message
 
     def draw(self, **kwargs):
         self.background.fill((0,0,255))
@@ -48,8 +61,34 @@ class ClickClack(minigame.Minigame):
         textRect = text.get_rect()
         self.background.blit(text, (textRect[0]+350, textRect[1]+400,\
                                     textRect[2], textRect[3]))
-        
+
+        self.drawScore(self.background)
+        self.drawFailure(self.background)
         self.screen.blit(self.background, (0,0))
+
+    def drawScore(self, bg):
+        counter = self.score
+        for i in xrange(3): #you have 3 lives
+            if counter > 0:
+                counter -= 1
+                pic = self.noprotag
+            else:
+                pic = self.yesprotag
+            picRect = pic.get_rect()
+            bg.blit(pic, (picRect[0]+25, picRect[1]+100*i,\
+                          picRect[2], picRect[3]))
+
+    def drawFailure(self, bg):
+        counter = self.killed
+        for i in xrange(5): #you have to kill 5 things
+            if counter > 0:
+                counter -= 1
+                pic = self.nomullet
+            else:
+                pic = self.yesmullet
+            picRect = pic.get_rect()
+            bg.blit(pic, (picRect[0]+725, picRect[1]+100*i,\
+                          picRect[2], picRect[3]))
 
     def won(self):
         if self.score > 3:
@@ -67,6 +106,8 @@ class ClickClack(minigame.Minigame):
     def reset(self):
         self.score = 0
         self.toSpawn = self.baseSpawn
+        self.killed = 0
+        self.words = []
         
     def update(self, **kwargs):
         remove = False
@@ -85,10 +126,13 @@ class ClickClack(minigame.Minigame):
             if i.match(self.current):
                 i.toDelete = True
                 remove = True
-                break
+                self.killed += 1
+            elif i.update():
+                i.ToDelete = True
+                self.score += 1
         if remove:
             self.current = ""
-        self.words = [i for i in self.words if (not i.toDelete) and (not i.update())]
+        self.words = [i for i in self.words if not i.toDelete]
 
         if clear:
             self.current = ""
