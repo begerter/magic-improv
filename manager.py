@@ -14,14 +14,16 @@ class Manager:
         self.board = Board(screen=screen, clock=clock)
         self.easywin = EasyWin(screen)
         self.current = self.easywin
+        self.catcher = None
 
     def draw(self, screen):
         self.current.draw()
 
     def update(self):
-        catcher = self.current.update()
+        self.catcher = self.current.update(result=self.catcher)
         if self.status == _MINI and catcher != None:
             self.current = self.board
             self.status = _TBG
+        
             # pass along results to board somehow?
         
