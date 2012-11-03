@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 from sys import exit
-import os,sys, random
+import os,sys, random,math
 
 def load_image(name, colorkey=None):
     fullname = os.path.join('assets', name)
@@ -70,6 +70,21 @@ class Player(pygame.sprite.Sprite):
         if self.down and self.rect.bottom < self.area.bottom:
                 self.rect.move_ip(0, self.moveRate)
 
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self,x,y,index,indrange):
+        pygame.sprite.Sprite.__init__(self)
+        self.image, self.rect = load_image('smallEnemy.png',-1)
+        screen = pygame.display.get_surface()
+        self.area = screen.get_rect()
+        self.rect.topleft = x,y
+        self.moveRate = 3
+        self.ind = index
+        self.range = indrange
+    def update(self):
+        movex = math.cos(2*math.pi*self.ind/self.range)
+        movey = math.sin(2*math.pi*self.ind/self.range)
+        self.rect.move_ip(movex*self.moveRate, movey*self.moveRate)
+
 class Missile(pygame.sprite.Sprite):
     def __init__(self,speed):
         pygame.sprite.Sprite.__init__(self)
@@ -79,9 +94,19 @@ class Missile(pygame.sprite.Sprite):
         self.rect.topleft = screen.get_width(), random.randint(0,screen.get_height() - self.rect.height)
         self.moveRate = speed
         self.v = 0.0
+        self.counter = 0
+        self.indrange = 8
+        self.bullets = []
     def update(self):
+        self.counter += 1
         self.v += random.random()-0.5
         self.rect.move_ip(-1 * self.moveRate, self.v*self.moveRate)
+        if self.counter == random.randint(80,170):
+            for i in xrange(self.indrange):
+                self.bullets.append(Bullet(self.rect.left,self.rect.top,i,self.indrange))
+        if len(self.bullets) > 0:
+            for bullet in self.bullets:
+                bullet.update()
 class Missiles(object):
     def __init__(self, screen, clock, **kwargs):
         self.player = Player()
@@ -106,9 +131,11 @@ class Missiles(object):
         self.player.left = False
         self.player.right = False
         for missile in self.missiles:
+            for bullet in missile.bullets:
+                missile.bullets.remove(bullet)
+            missile.bullets = []
             self.missiles.remove(missile)
         self.missiles = []
-        return False
     def update(self, **kwargs):
         self.counter += 1
         if self.counter > 1200:
@@ -122,11 +149,15 @@ class Missiles(object):
                 #for missile in self.missiles:
                     #if missile.rect.collidepoint(pygame.mouse.get_pos()):
         for missile in self.missiles:
+            for bullet in missile.bullets:
+                if bullet.rect.colliderect(self.player.rect):
+                    self.reset()
+                    return False
             if missile.rect.colliderect(self.player.rect):
                 self.reset()
                 return False
         self.timer += 1
-        self.missiles.append(Missile(random.randint(2,5) + 0.02*random.randint(1,self.timer)))
+        self.missiles.append(Missile(random.randint(1,3) + 0.002*random.randint(1,self.timer)))
         for missile in self.missiles:
             missile.update()
             if missile.rect.right < 0:
@@ -137,6 +168,9 @@ class Missiles(object):
         self.screen.blit(self.background, (0,0))
         self.screen.blit(self.back, self.backRect)
         allsprites = pygame.sprite.RenderPlain(self.missiles)
+        for missile in self.missiles:
+            sprites = pygame.sprite.RenderPlain(missile.bullets)
+            sprites.draw(self.screen)
         self.playersprite.draw(self.screen)
         allsprites.draw(self.screen)
         pygame.display.flip()
