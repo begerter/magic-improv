@@ -71,13 +71,13 @@ class Player(pygame.sprite.Sprite):
                 self.rect.move_ip(0, self.moveRate)
 
 class Missile(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self,speed):
         pygame.sprite.Sprite.__init__(self)
         self.image, self.rect = load_image('tinymullet.png',-1)
         screen = pygame.display.get_surface()
         self.area = screen.get_rect()
         self.rect.topleft = screen.get_width(), random.randint(0,screen.get_height() - self.rect.height)
-        self.moveRate = 2.0 + random.random()*5.0
+        self.moveRate = speed
     def update(self):
         self.rect.move_ip(-1 * self.moveRate, 0)
 class Missiles(object):
@@ -97,6 +97,7 @@ class Missiles(object):
         self.playersprite = pygame.sprite.RenderPlain(self.player)
     def reset(self):
         self.timer = 0
+        self.counter = 0
         self.player.up = False
         self.player.down = False
         self.player.left = False
@@ -122,9 +123,7 @@ class Missiles(object):
                 self.reset()
                 return False
         self.timer += 1
-        self.spawnrate = max(1,self.spawnrate - (0.000025 * self.timer))
-        if self.timer % int(self.spawnrate) == 0:
-            self.missiles.append(Missile())
+        self.missiles.append(Missile(random.randint(2,5) + 0.03*random.randint(1,self.timer)))
         for missile in self.missiles:
             missile.update()
             if missile.rect.right < 0:
