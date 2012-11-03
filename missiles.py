@@ -52,7 +52,6 @@ class Player(pygame.sprite.Sprite):
                 if event.key == K_DOWN:
                     self.down = False
             elif event.type == KEYDOWN:
-                print event.key
                 if event.key == K_LEFT:
                     self.left = True
                 if event.key == K_RIGHT:
@@ -101,7 +100,7 @@ class Missile(pygame.sprite.Sprite):
         self.counter += 1
         self.v += random.random()-0.5
         self.rect.move_ip(-1 * self.moveRate, self.v*self.moveRate)
-        if self.counter == random.randint(80,170):
+        if self.counter == random.randint(80,170) and random.random() > 0.5:
             for i in xrange(self.indrange):
                 self.bullets.append(Bullet(self.rect.left,self.rect.top,i,self.indrange))
         if len(self.bullets) > 0:
@@ -138,7 +137,7 @@ class Missiles(object):
         self.missiles = []
     def update(self, **kwargs):
         self.counter += 1
-        if self.counter > 1200:
+        if self.counter > 800:
             self.reset()
             return True
         self.player.update()
@@ -157,7 +156,7 @@ class Missiles(object):
                 self.reset()
                 return False
         self.timer += 1
-        self.missiles.append(Missile(random.randint(1,3) + 0.002*random.randint(1,self.timer)))
+        self.missiles.append(Missile(random.randint(1,2) + 0.002*random.randint(1,self.timer)))
         for missile in self.missiles:
             missile.update()
             if missile.rect.right < 0:

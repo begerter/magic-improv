@@ -76,6 +76,8 @@ class ClickClack(minigame.Minigame):
         for event in pygame.event.get(pygame.KEYDOWN):
             if event.key == pygame.K_RETURN:
                 clear = True
+            if event.key == pygame.K_BACKSPACE:
+                self.current = self.current[:-1]
             else:
                 self.current += event.unicode
         
