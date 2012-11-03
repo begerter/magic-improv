@@ -12,6 +12,9 @@ class EasyWin(minigame.Minigame):
         self.background.fill((0,255,0))
         pygame.draw.rect(self.background, (0,0,255), pygame.Rect(50,50,100,100))
         self.screen.blit(self.background, (0,0))
+
+    def reset(self):
+        self.result = None
         
     def update(self, **kwargs):
 
@@ -28,6 +31,5 @@ class EasyWin(minigame.Minigame):
         # if there was a click, we are done
         if self.result != None:
             status = self.result
-            self.result = None
             print "Done: ", status
             return status

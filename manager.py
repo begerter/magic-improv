@@ -23,6 +23,7 @@ class Manager:
     def update(self):
         self.catcher = self.current.update(result=self.catcher)
         if self.status == _MINI and self.catcher != None:
+            self.current.reset()
             self.current = self.board
             self.status = _TBG
         elif self.status == _TBG and self.catcher != None:
