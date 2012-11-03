@@ -32,7 +32,7 @@ class Player(pygame.sprite.Sprite):
         self.image, self.rect = load_image('smallPlayer.png',-1)
         screen = pygame.display.get_surface()
         self.area = screen.get_rect()
-        self.rect.topleft = 10, 10
+        self.rect.topleft = 30, 300
         self.moveRate = 4
         self.up = False
         self.down = False
@@ -125,6 +125,7 @@ class Missiles(object):
     def reset(self):
         self.timer = 0
         self.counter = 0
+        self.player.rect.topleft = 30, 300
         self.player.up = False
         self.player.down = False
         self.player.left = False
@@ -144,9 +145,6 @@ class Missiles(object):
         for event in pygame.event.get():
             if event.type == QUIT:
                 terminate()
-            #if event.type == MOUSEBUTTONDOWN:
-                #for missile in self.missiles:
-                    #if missile.rect.collidepoint(pygame.mouse.get_pos()):
         for missile in self.missiles:
             for bullet in missile.bullets:
                 if bullet.rect.colliderect(self.player.rect):
