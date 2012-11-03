@@ -9,7 +9,8 @@ from clickclack import ClickClack
 from platformer import Game as Platformer
 from transfer import Transfer
 import random
-
+from slides import Slideshow
+_INTRO = "intro"
 _TBG = "tbg"
 _MINI = "mini"
 _TRANSFER = "transfer"
@@ -18,16 +19,17 @@ class Manager:
     def __init__(self, screen, clock, **kwargs):
         #self.turns = turns()
         self.screen = screen
-        self.status = _TBG
+        self.status = _INTRO
         self.minigames = []
         self.board = Board(screen=screen, clock=clock)
+        self.intro = Slideshow(screen=screen,slides=((1800000,"andrewdrewanelephant.png"),))
         self.minigames.append((Missiles(screen=screen,clock=clock),["Dodge"]))
         self.minigames.append((WhackAMullet(screen=screen,clock=clock), ["Kill"]))
         self.minigames.append((Freeze(screen=screen,clock=clock), ["Dodge", "Kill", "Jump", "Type"]))
         self.minigames.append((Platformer(clock=clock,screen=screen), ["Jump"]))
         #self.minigames.append(EasyWin(screen))
         self.minigames.append((ClickClack(screen), ["Type"]))
-        self.current = self.board
+        self.current = self.intro
         self.catcher = None
         self.wait = 7
         self.currWait = 0
@@ -53,6 +55,12 @@ class Manager:
                 #self.current = self.minigames[random.randint(0,len(self.minigames)-1)]
                 #self.status = _MINI
                 self.currWait = self.wait
+            elif self.status == _INTRO and self.catcher != None:
+              self.catcher = None
+              self.current.reset()
+              self.current = self.board
+              self.status = _TBG
+              self.currWait = self.wait 
         else:
             #clear queue
             #self.currWait -= 1
