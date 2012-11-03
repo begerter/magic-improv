@@ -26,3 +26,5 @@ while True:
     manager.update()
     manager.draw(screen)
 
+    pygame.display.flip()
+
