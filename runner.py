@@ -1,4 +1,7 @@
-import minigame
+import pygame
+from pygame.locals import *
+from sys import exit
+import os,sys
 
 def load_image(name, colorkey=None):
     fullname = os.path.join('assets', name)
@@ -16,50 +19,65 @@ def load_image(name, colorkey=None):
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
-        pygame.sprite.Sprite.__int__(self)
-        self.image,self.rect = load_image('dude.png', -1)
-        self.moveUp = false
-        self.moveDown = false
-        self.moveRight = false
-        self.moveLeft = false
+        pygame.sprite.Sprite.__init__(self)
+        self.image, self.rect = load_image('dude.png', -1)
+        screen = pygame.display.get_surface()
+        self.area = screen.get_rect()
+        self.rect.topleft = 10, 10
         self.moveRate = 4
-    def update():
+        self.up = False
+        self.down = False
+        self.left = False
+        self.right = False
+        
+    def update(self):
         for event in pygame.event.get():
-            if event.type = QUIT:
+            if event.type == QUIT:
                 terminate()
-            if event.type == KEYDOWN:
+            if event.type == KEYUP:
                 if event.key == K_LEFT:
-                    self.moveRight = False
-                    self.moveLeft = True
+                    self.left = False
                 if event.key == K_RIGHT:
-                    self.moveRight = True
-                    self.moveLeft = False
+                    self.right = False
                 if event.key == K_UP:
-                    self.moveUp = True
-                    self.moveDown = False
+                    self.up = False
                 if event.key == K_DOWN:
-                    self.moveUp = True
-                    self.moveDown = False
-            if self.moveLeft and playerRect.left > 0:
-                playerRect.self.move_ip(-1 * self.moveRate, 0)
-            if self.moveRight and playerRect.right < screen.width():
-                playerRect.self.move_ip(self.moveRate, 0)
-            if self.moveUp and playerRect.top > 0:
-                playerRect.self.move_ip(0, -1 * self.moveRate)
-            if self.moveDown and playerRect.bottom < screen.height():
-                playerRect.self.move_ip(0, self.moveRate)
-class runner(minigame.Minigame):
-    def __init__(self,screen):
-        minigame.Minigame.init()
+                    self.down = False
+            elif event.type == KEYDOWN:
+                if event.key == K_LEFT:
+                    self.left = True
+                if event.key == K_RIGHT:
+                    self.right = True
+                if event.key == K_UP:
+                    self.up = True
+                if event.key == K_DOWN:
+                    self.down = True
+        if self.left and self.rect.left > 0:
+                self.rect.move_ip(-1 * self.moveRate, 0)
+        if self.right and self.rect.right < self.area.right:
+                self.rect.move_ip(self.moveRate, 0)
+        if self.up and self.rect.top > 0:
+                self.rect.move_ip(0, -1 * self.moveRate)
+        if self.down and self.rect.bottom < self.area.bottom:
+                self.rect.move_ip(0, self.moveRate)          
+class Runner(object):
+    def __init__(self, screen, clock, **kwargs):
         self.player = Player()
-        self.clock = pygame.time.Clock()
-        self.allsprites = pygame.sprite.RenderPlain(player)
-
-    def update():
-        self.clock.tick(60)
-        self.allsprites.update()
-        screen.blit(background, (0,0))
-        allsprites.draw(screen)
+        self.screen = screen
+        self.clock = clock
+        self.allsprites = pygame.sprite.RenderPlain(self.player)
+        self.background = pygame.Surface(self.screen.get_size())
+        self.background = self.background.convert()
+        self.background.fill((0,0,0))
+        self.screen.blit(self.background, (0,0))
         pygame.display.flip()
+    def update(self, **kwargs):
+        self.allsprites.update()
+
+    def draw(self, **kwargs):
+        self.screen.blit(self.background, (0,0))
+        self.allsprites.draw(self.screen)
+        pygame.display.flip()
+        
     
  
