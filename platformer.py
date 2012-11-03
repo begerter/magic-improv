@@ -51,6 +51,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = 1
 
         self.actions = [0,0]
+        self.isDead = False
 
     def update(self, dt, game):
         # take a copy of the current position of the player before movement for
@@ -167,10 +168,10 @@ class Game(minigame.Minigame):
         '''
         if self.player.won:
             return exit(True)
-            
+        '''    
         if self.player.isDead:
             return exit(False)
-        '''
+        
         self.tilemap.update(dt / 1000., self)
 #        self.player.update(dt, self)
 #        for enemy in self.enemies:
