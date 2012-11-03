@@ -4,6 +4,8 @@ from pygame.locals import *
 from sys import exit
 from .io.mouse import Mouse
 import os
+import itertools
+from .terrain.base import Base
 from .units.dude import Dude
 from .units.zombie import Zombie
 WIDTH = 0
@@ -19,7 +21,9 @@ class Board(object):
     self.selected = None
     self.div = div
     self.units = dict( (loc, type(loc=loc,board=self)) for (group, type) in UNITS for loc in group)
-    self.sprites = pygame.sprite.RenderPlain(tuple(self.units.values()))
+    self.terrain = dict( ((x,y), Base(loc=(x,y),cost=1,board=self,image="base_terrain.png")) for x in range(10) for y in range(10) )
+    self.terrainr = pygame.sprite.RenderPlain(tuple(self.terrain.values()))
+    self.unitsr   = pygame.sprite.RenderPlain(tuple(self.units.values()))
   def genBackground(self, div):
     self.background = pygame.Surface((600,600))
     self.background = self.background.convert()
@@ -39,6 +43,7 @@ class Board(object):
             self.selected = None
           elif self.selected is None and loc in self.units:
             self.selected = loc
+            self.terrain[loc].select()
           elif loc in self.units:
             result = (self.units[self.selected], self.units[loc])
             self.selected = None
@@ -48,7 +53,11 @@ class Board(object):
             self.units[loc] = self.units[self.selected]
             del self.units[self.selected]
             self.selected = None
-      self.sprites.update()
+      if self.selected is None:
+        for t in self.terrain.values():
+          t.clear()
+      self.terrainr.update()
+      self.unitsr.update()
     finally:
       # eat queue becuase why not
       for event in pygame.event.get():
@@ -67,5 +76,8 @@ class Board(object):
       select = select.convert()
       select.fill((250,0,0))
       self.screen.blit(select, self.pos(self.selected))
-    self.sprites.draw(self.screen)
+    self.terrainr.draw(self.screen)
+    self.unitsr.draw(self.screen)
+    for t in self.terrain.values():
+      t.overlay(self.screen)
 
