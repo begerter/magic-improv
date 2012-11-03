@@ -29,9 +29,9 @@ class Board(object):
     self.units = dict( (loc, type(loc=loc,board=self)) for (group, type) in UNITS for loc in group)
     self.unitsr   = pygame.sprite.RenderPlain(tuple(self.units.values()))
   def genBackground(self, div):
-    self.background = pygame.Surface((600,600))
+    self.background = pygame.Surface((800,600))
     self.background = self.background.convert()
-    # self.background.fill((0,0,250))
+    self.background.fill((0,0,0))
     size = self.background.get_size()
     for i in xrange(0, size[0], div[0]):
       pygame.draw.line(self.background, (0,0,0), (i, 0), (i, size[1]))
@@ -60,7 +60,7 @@ class Board(object):
             self.clearSelection()
             self.selected = loc
             self.terrain.select(loc)
-          elif self.selected and self.units[self.selected].side == 0 and self.terrain.table[loc].over[1]:
+          elif self.selected and self.units[self.selected].side == 0 and loc in self.terrain.table and self.terrain.table[loc].over[1]:
             self.units[self.selected].move(loc)
             self.units[loc] = self.units[self.selected]
             del self.units[self.selected]
@@ -83,4 +83,15 @@ class Board(object):
     self.terrain.draw(self.screen)
     self.unitsr.draw(self.screen)
     self.terrain.overlay(self.screen)
+    if self.selected:
+      font = pygame.font.Font(None, 36)
+      sunit = self.units[self.selected]
+      text = font.render(sunit.name, 1, (255,255,255))
+      self.screen.blit(text, (610,100))
+      text = font.render("Health : %d / %d" % (sunit.health, sunit.total_health), 1, (255,255,255))
+      self.screen.blit(text, (610,140))
+      text = font.render("Move : %d / %d" % (sunit.movement, sunit.total_movement), 1, (255,255,255))
+      self.screen.blit(text, (610,180))
+      text = font.render("Range : %d" % sunit.range, 1, (255,255,255))
+      self.screen.blit(text, (610,220))
 
