@@ -33,7 +33,7 @@ class Manager:
         self.catcher = None
         self.wait = 7
         self.currWait = 0
-
+        self.counter = 0
     def draw(self, screen):
         self.current.draw()
 
@@ -50,7 +50,11 @@ class Manager:
                 print "switching to transfer"
                 self.easywin = EasyWin(self.screen)
                 self.status = _TRANSFER
-                select = self.minigames[random.randint(0,len(self.minigames)-1)]
+                self.counter += 1
+                if self.counter == len(self.minigames):
+                    self.counter = 0
+                select = self.minigames[self.counter]
+                #select = self.minigames[random.randint(0,len(self.minigames)-1)]
                 self.current = Transfer(self.screen,select[1][random.randint(0,len(select[1])-1)],select[0])
                 #self.current = self.minigames[random.randint(0,len(self.minigames)-1)]
                 #self.status = _MINI
