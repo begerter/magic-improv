@@ -3,10 +3,10 @@ import minigame
 from tbg.board import Board
 
 class Manager:
-    def __init__(self):
+    def __init__(self, screen, clock, **kwargs):
         #self.turns = turns()
         self.minigames = []
-        self.board = Board(screen, clock)
+        self.board = Board(screen=screen, clock=clock)
         self.current = self.board
 
     def draw(self, screen):

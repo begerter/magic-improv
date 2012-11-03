@@ -1,4 +1,3 @@
-
 import pygame
 from pygame.locals import *
 import manager as man
@@ -8,10 +7,10 @@ import sys
 
 # initialize
 pygame.init()
-screen = pygame.display.set_mode((468, 60))
-pygame.mouse.set_visible(0)
+screen = pygame.display.set_mode((800, 600))
+pygame.mouse.set_visible(1)
 clock = pygame.time.Clock()
-manager = man.Manager()
+manager = man.Manager(screen=screen, clock=clock)
 
 # setup display
 background = pygame.Surface(screen.get_size())
@@ -24,10 +23,8 @@ screen.blit(background, (0,0))
 while True:
     clock.tick(60)
     
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            exit
-
     manager.update()
     manager.draw(screen)
+
+    pygame.display.flip()
 
