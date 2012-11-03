@@ -22,7 +22,7 @@ class Manager:
         self.status = _INTRO
         self.minigames = []
         self.board = Board(screen=screen, clock=clock)
-        self.intro = Slideshow(screen=screen,slides=((1800000,"andrewdrewanelephant.png"),))
+        self.intro = Slideshow(screen=screen,slides=((1800000,"intro.png"),))
         self.minigames.append((Missiles(screen=screen,clock=clock),["Dodge"]))
         self.minigames.append((WhackAMullet(screen=screen,clock=clock), ["Kill"]))
         self.minigames.append((Freeze(screen=screen,clock=clock), ["Dodge", "Kill", "Jump", "Type"]))
