@@ -32,7 +32,7 @@ class Player(pygame.sprite.Sprite):
         self.image, self.rect = load_image('smallPlayer.png',-1)
         screen = pygame.display.get_surface()
         self.area = screen.get_rect()
-        self.rect.topleft = 10, 10
+        self.rect.topleft = 30, 300
         self.moveRate = 4
         self.up = False
         self.down = False
@@ -52,7 +52,6 @@ class Player(pygame.sprite.Sprite):
                 if event.key == K_DOWN:
                     self.down = False
             elif event.type == KEYDOWN:
-                print event.key
                 if event.key == K_LEFT:
                     self.left = True
                 if event.key == K_RIGHT:
@@ -73,7 +72,7 @@ class Player(pygame.sprite.Sprite):
 class Bullet(pygame.sprite.Sprite):
     def __init__(self,x,y,index,indrange):
         pygame.sprite.Sprite.__init__(self)
-        self.image, self.rect = load_image('smallEnemy.png',-1)
+        self.image, self.rect = load_image('tinymullet2.png',-1)
         screen = pygame.display.get_surface()
         self.area = screen.get_rect()
         self.rect.topleft = x,y
@@ -101,7 +100,7 @@ class Missile(pygame.sprite.Sprite):
         self.counter += 1
         self.v += random.random()-0.5
         self.rect.move_ip(-1 * self.moveRate, self.v*self.moveRate)
-        if self.counter == random.randint(80,170):
+        if self.counter == random.randint(80,170) and random.random() > 0.5:
             for i in xrange(self.indrange):
                 self.bullets.append(Bullet(self.rect.left,self.rect.top,i,self.indrange))
         if len(self.bullets) > 0:
@@ -126,6 +125,7 @@ class Missiles(object):
     def reset(self):
         self.timer = 0
         self.counter = 0
+        self.player.rect.topleft = 30, 300
         self.player.up = False
         self.player.down = False
         self.player.left = False
@@ -138,16 +138,13 @@ class Missiles(object):
         self.missiles = []
     def update(self, **kwargs):
         self.counter += 1
-        if self.counter > 1200:
+        if self.counter > 800:
             self.reset()
             return True
         self.player.update()
         for event in pygame.event.get():
             if event.type == QUIT:
                 terminate()
-            #if event.type == MOUSEBUTTONDOWN:
-                #for missile in self.missiles:
-                    #if missile.rect.collidepoint(pygame.mouse.get_pos()):
         for missile in self.missiles:
             for bullet in missile.bullets:
                 if bullet.rect.colliderect(self.player.rect):
@@ -157,7 +154,7 @@ class Missiles(object):
                 self.reset()
                 return False
         self.timer += 1
-        self.missiles.append(Missile(random.randint(1,3) + 0.002*random.randint(1,self.timer)))
+        self.missiles.append(Missile(random.randint(1,2) + 0.002*random.randint(1,self.timer)))
         for missile in self.missiles:
             missile.update()
             if missile.rect.right < 0:

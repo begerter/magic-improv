@@ -168,17 +168,17 @@ class Game(minigame.Minigame):
         for enemy in self.tilemap.layers['triggers'].find('enemy'):
             Enemy((enemy.px, enemy.py), self.enemies)
 
-    def exit(self, bool):
-        pygame.mouse.set_visible(1)
-        #throw back to master
-        #clear screen
+        self.tilemap.set_focus(self.player.rect.x, self.player.rect.y)
 
-    def update(self, dt):
+
+    def update(self, **kwargs):
+        dt = self.clock.tick(60)
+
         if self.player.won:
-            return exit(True)
+            return True
         
         if self.player.isDead:
-            return exit(False)
+            return False
         
         self.tilemap.update(dt / 1000., self)
 
@@ -188,7 +188,9 @@ class Game(minigame.Minigame):
         self.tilemap.draw(self.screen)
         pygame.display.flip()
 
-
+    
+    def reset(self):
+        self.__init__(self.clock, self.screen)
         
 def main():
     clock = pygame.time.Clock()
