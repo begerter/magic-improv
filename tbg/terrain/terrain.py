@@ -16,14 +16,17 @@ class Terrain(object):
   def select(self, loc):
     self.table[loc].select()
     if loc in self.board.units:
-      heap = [ (self.board.units[loc].movement, loc) ]
+      side = self.board.units[loc].side
+      move = self.board.units[loc].movement
+      heap = [ (0, loc) ]
       while heap:
         m, loc = heapq.heappop(heap)
         if loc not in self.table: continue
         if self.table[loc].over[1]: continue
+        if loc in self.board.units and self.board.units[loc].side != side: continue
         self.table[loc].movable(m)
-        if m > 0:
-          m -= self.table[loc].cost
+        if m < move:
+          m += self.table[loc].cost
           for i,j in ((1,0),(0,1),(-1,0),(0,-1)):
             heapq.heappush(heap, (m, (loc[0]+i,loc[1]+j)))
   def update(self):
