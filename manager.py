@@ -2,7 +2,7 @@ import pygame
 import minigame
 from tbg.board import Board
 from easywin import EasyWin
-
+from missiles import Missiles
 _TBG = "tbg"
 _MINI = "mini"
 
@@ -12,8 +12,9 @@ class Manager:
         self.status = _MINI
         self.minigames = []
         self.board = Board(screen=screen, clock=clock)
+        self.missiles = Missiles(screen=screen,clock=clock)
         self.easywin = EasyWin(screen)
-        self.current = self.easywin
+        self.current = self.missiles
 
     def draw(self, screen):
         self.current.draw()
