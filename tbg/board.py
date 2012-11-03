@@ -13,7 +13,7 @@ class Board(object):
   def draw(self, **kwargs):
     background = pygame.Surface(self.screen.get_size())
     background = background.convert()
-    background.fill((250,0,0))
+    background.fill((0,0,250))
     self.screen.blit(background, (0,0))
 
    
