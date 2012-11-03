@@ -36,8 +36,8 @@ class ClickClack(minigame.Minigame):
         self.baseSpawn = 5
         self.toSpawn = self.baseSpawn
         self.score = 0
-        self.wordlist = ["mullet"]#, "bad", "blood", "terror", "sunglasses", "fight",\
-                         #"death", "orange"]
+        self.wordlist = ["mullet", "mullet", "mullet", "mullet", "help", "mullet",\
+                         "save me", "mullet", "mullet"]
 
     def draw(self, **kwargs):
         self.background.fill((0,0,255))
