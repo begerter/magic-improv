@@ -5,22 +5,23 @@ from sys import exit
 from .io.mouse import Mouse
 import os
 from .units.dude import Dude
+from .units.zombie import Zombie
 WIDTH = 0
 HEIGHT= 1
-START = ((0,0), (1,1), (3,2))
+UNITS = (((0,0), (1,1), (3,2)), Dude), (((4,4), (5,5), (2,3)), Zombie)
 
 class Board(object):
-  def __init__(self, screen, clock, div=(80,60), **kwargs):
+  def __init__(self, screen, clock, div=(60,60), **kwargs):
     self.screen = screen
     self.clock  = clock
     self.genBackground(div)
     self.mouse  = Mouse()
     self.selected = None
     self.div = div
-    self.units = dict( (loc, Dude(loc=loc,board=self)) for loc in START)
+    self.units = dict( (loc, type(loc=loc,board=self)) for (group, type) in UNITS for loc in group)
     self.sprites = pygame.sprite.RenderPlain(tuple(self.units.values()))
   def genBackground(self, div):
-    self.background = pygame.Surface(self.screen.get_size())
+    self.background = pygame.Surface((600,600))
     self.background = self.background.convert()
     self.background.fill((0,0,250))
     size = self.background.get_size()
