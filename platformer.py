@@ -11,7 +11,7 @@ import minigame
 
 
 class Enemy(pygame.sprite.Sprite):
-    image = pygame.image.load('assets/enemy.jpg')
+    image = pygame.image.load('assets/enemy.png')
     def __init__(self, location, *groups):
         super(Enemy, self).__init__(*groups)
         self.rect = pygame.rect.Rect(location, self.image.get_size())
@@ -31,15 +31,15 @@ class Enemy(pygame.sprite.Sprite):
             break
 
         if self.rect.colliderect(game.player.rect):
-            game.player.isDead = true
+            game.player.isDead = True
 
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, location, *groups):
         super(Player, self).__init__(*groups)
-        self.image = pygame.image.load('player-right.png')
+        self.image = pygame.image.load('assets/player-right.png')
         self.right_image = self.image
-        self.left_image = pygame.image.load('player-left.png')
+        self.left_image = pygame.image.load('assets/player-left.png')
         self.rect = pygame.rect.Rect(location, self.image.get_size())
         # is the player resting on a surface and able to jump?
         self.resting = False
@@ -50,30 +50,51 @@ class Player(pygame.sprite.Sprite):
         # movement in the X direction; postive is right, negative is left
         self.direction = 1
 
+        self.actions = [0,0]
+
     def update(self, dt, game):
         # take a copy of the current position of the player before movement for
         # use in movement collision response
         last = self.rect.copy()
 
         # handle the player movement left/right keys
-        key = pygame.key.get_pressed()
-        if key[pygame.K_LEFT]:
+        for event in pygame.event.get():
+            if event.type == pygame.KEYUP and event.key == pygame.K_LEFT:
+                self.actions[0] = 0
+            if event.type == pygame.KEYUP and event.key == pygame.K_RIGHT:
+                self.actions[1] = 0
+
+
+            if (event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT):
+                self.rect.x -= 300 * dt
+                self.image = self.left_image
+                self.direction = -1
+                self.actions[0] = 1
+            if (event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT):
+                self.rect.x += 300 * dt
+                self.image = self.right_image
+                self.direction = 1
+                self.actions[1] = 1
+
+            # if the player's allowed to let them jump with the spacebar; note that
+            # wall-jumping could be allowed with an additional "touching a wall"
+            # flag
+            if self.resting and event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+#                game.jump.play()
+                # we jump by setting the player's velocity to something large going
+                # up (positive Y is down the screen)
+                self.dy = -500
+        if self.actions[0]:
             self.rect.x -= 300 * dt
             self.image = self.left_image
             self.direction = -1
-        if key[pygame.K_RIGHT]:
+            
+        if self.actions[1]:
             self.rect.x += 300 * dt
             self.image = self.right_image
             self.direction = 1
 
-        # if the player's allowed to let them jump with the spacebar; note that
-        # wall-jumping could be allowed with an additional "touching a wall"
-        # flag
-        if self.resting and key[pygame.K_SPACE]:
-            game.jump.play()
-            # we jump by setting the player's velocity to something large going
-            # up (positive Y is down the screen)
-            self.dy = -500
+
 
         # add gravity on to the currect vertical speed
         self.dy = min(400, self.dy + 40)
@@ -113,15 +134,13 @@ class Player(pygame.sprite.Sprite):
         # re-focus the tilemap viewport on the player's new position
         game.tilemap.set_focus(new.x, new.y)
 
-class Game(minigame):
+class Game(minigame.Minigame):
     def __init__(self, clock, screen):
-        super.__init__(screen)
+        minigame.Minigame.__init__(self, screen)
         self.clock = clock
-        self.tilemap = tmx.load(assets/platformerMaps/map1.tmx)
+        self.tilemap = tmx.load('assets/platformerMaps/map1.tmx', screen.get_size())
         self.background = pygame.image.load('assets/platformerbg.png')
-        pygame.mouse.set_visible(0)
-
-        self.tilemap = tmx.load('map1.tmx', screen.get_size())
+#        pygame.mouse.set_visible(0)
 
         # add a layer for our sprites controlled by the tilemap scrolling
         self.sprites = tmx.SpriteLayer()
@@ -145,34 +164,40 @@ class Game(minigame):
         #clear screen
 
     def update(self, dt):
+        '''
         if self.player.won:
             return exit(True)
             
         if self.player.isDead:
             return exit(False)
-    
+        '''
         self.tilemap.update(dt / 1000., self)
-        player.update(dt, self)
-        for enemy in enemies:
-            enemy.update(dt, self)
+#        self.player.update(dt, self)
+#        for enemy in self.enemies:
+#            enemy.update(dt, self)
 
         #draw()
         #is called by master
 
-    def draw(self)
-        screen.blit(background, (0,0))
-        self.tilemap.draw(screen)
+    def draw(self):
+        self.screen.blit(self.background, (0,0))
+        self.tilemap.draw(self.screen)
         pygame.display.flip()
 
 
         
-def main:
+def main():
     clock = pygame.time.Clock()
     screen = pygame.display.set_mode((800, 600))
 
     game = Game(clock, screen)
+    done = None
 
     while done == None:
         dt = clock.tick(60)
         done = game.update(dt)
         game.draw()
+
+
+if __name__ == '__main__':
+    main()
