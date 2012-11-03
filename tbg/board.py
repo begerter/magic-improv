@@ -13,6 +13,7 @@ from .units.dude import Dude
 from .units.zombie import Zombie
 from .units.mullet import Mullet
 import random
+
 WIDTH = 0
 HEIGHT= 1
 UNITS = (((0,0),), Protag), (((0,1),), Archer), (((1,1), (3,2)), Dude), (((4,4), (5,5), (2,3)), Zombie), (((6,6),), Mullet)
@@ -145,7 +146,7 @@ class Board(object):
       self.screen.blit(text, (610,100))
       text = font.render("Health : %d / %d" % (sunit.health, sunit.total_health), 1, (255,255,255))
       self.screen.blit(text, (610,140))
-      text = font.render("Move : %d / %d" % (sunit.movement, sunit.total_movement), 1, (255,255,255))
+      text = font.render("Move : %d / %d" % (max(sunit.movement,0), sunit.total_movement), 1, (255,255,255))
       self.screen.blit(text, (610,180))
       text = font.render("Range : %d" % sunit.range, 1, (255,255,255))
       self.screen.blit(text, (610,220))
