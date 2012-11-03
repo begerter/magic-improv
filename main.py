@@ -1,6 +1,8 @@
+
 import pygame
 from pygame.locals import *
 import manager as man
+import sys
 
 # load resources
 
@@ -28,3 +30,4 @@ while True:
 
     manager.update()
     manager.draw(screen)
+
