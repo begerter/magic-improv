@@ -3,12 +3,9 @@ import minigame
 from missiles import Missiles
 from easywin import EasyWin
 from tbg.board import Board
-<<<<<<< HEAD
 from whackamullet import WhackAMullet
 from freeze import Freeze
-=======
 from clickclack import ClickClack
->>>>>>> fa8519eb60431e980f52f6fa14489c9728a6fce6
 import random
 
 _TBG = "tbg"

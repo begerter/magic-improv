@@ -11,9 +11,10 @@ from .units.protag import Protag
 from .units.archer import Archer
 from .units.dude import Dude
 from .units.zombie import Zombie
+from .units.mullet import Mullet
 WIDTH = 0
 HEIGHT= 1
-UNITS = (((0,0),), Protag), (((0,1),), Archer), (((1,1), (3,2)), Dude), (((4,4), (5,5), (2,3)), Zombie)
+UNITS = (((0,0),), Protag), (((0,1),), Archer), (((1,1), (3,2)), Dude), (((4,4), (5,5), (2,3)), Zombie), (((6,6),), Mullet)
 
 class Board(object):
   def __init__(self, screen, clock, div=(60,60), **kwargs):
