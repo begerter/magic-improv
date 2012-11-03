@@ -3,11 +3,12 @@ from pygame.locals import *
 import os
 import heapq
 from .base import Base
+from .sand import Sand
 
 class Terrain(object):
   def __init__(self, board, **kwargs):
     super(Terrain, self).__init__(**kwargs)
-    self.table = dict( ((x,y), Base(loc=(x,y),cost=1,board=board,image="base_terrain.png"))
+    self.table = dict( ((x,y), Sand(loc=(x,y),board=board))
                       for x in range(10) for y in range(10) )
     self.renderer = pygame.sprite.RenderPlain(tuple(self.table.values()))
     self.board    = board
