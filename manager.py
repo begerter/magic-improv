@@ -1,6 +1,6 @@
 import pygame
 import minigame
-from tbg.board import Board
+from missiles import Missiles
 from easywin import EasyWin
 from tbg.board import Board
 import random
@@ -12,11 +12,11 @@ class Manager:
     def __init__(self, screen, clock, **kwargs):
         #self.turns = turns()
         self.screen = screen
-        self.status = _MINI
+        self.status = _TBG
         self.minigames = []
         self.board = Board(screen=screen, clock=clock)
-        self.minigames.append([Missiles(screen=screen,clock=clock)])
-        self.minigames.append([EasyWin(screen)])
+        self.minigames.append(Missiles(screen=screen,clock=clock))
+        self.minigames.append(EasyWin(screen))
         self.current = self.board
         self.catcher = None
         self.wait = 7
@@ -37,7 +37,7 @@ class Manager:
             elif self.status == _TBG and self.catcher != None:
                 print "switching to mini"
                 self.easywin = EasyWin(self.screen)
-                self.current = self.minigames[self.randint(0,len(self.minigames)-1)]
+                self.current = self.minigames[random.randint(0,len(self.minigames)-1)]
                 self.status = _MINI
                 self.currWait = self.wait
         else:
