@@ -70,5 +70,6 @@ class Manager:
                 print "switching to mini"
                 self.current = result
                 self.status = _MINI
+        
 
         

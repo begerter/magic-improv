@@ -39,6 +39,8 @@ try:
 
         pygame.display.flip()
     pygame.quit()
+except:
+    pass
 finally:
     pygame.quit()
 
