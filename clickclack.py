@@ -30,6 +30,11 @@ class ClickClack(minigame.Minigame):
         self.font2 = pygame.font.SysFont(None,42)
         self.background = pygame.Surface(self.screen.get_size())
         self.background = self.background.convert()
+        self.background.fill((0,0,0))
+        self.screen.blit(self.background, (0,0))
+        self.back = pygame.image.load(os.path.join('assets','mullettypebg.png'))
+        self.backRect = self.back.get_rect()
+        pygame.display.flip()
         self.words = []
         self.current = ""
         self.result = None
@@ -53,18 +58,19 @@ class ClickClack(minigame.Minigame):
             raise SystemExit, message
 
     def draw(self, **kwargs):
-        self.background.fill((0,0,255))
+        self.screen.blit(self.background, (0,0))
+        self.screen.blit(self.back, self.backRect)
         for i in self.words:
-            i.draw(self.background)
+            i.draw(self.screen)
 
         text = self.font2.render(">"+self.current, True, (255,0,0))
         textRect = text.get_rect()
-        self.background.blit(text, (textRect[0]+350, textRect[1]+400,\
+        self.screen.blit(text, (textRect[0]+350, textRect[1]+400,\
                                     textRect[2], textRect[3]))
 
-        self.drawScore(self.background)
-        self.drawFailure(self.background)
-        self.screen.blit(self.background, (0,0))
+        self.drawScore(self.screen)
+        self.drawFailure(self.screen)
+        pygame.display.flip()
 
     def drawScore(self, bg):
         counter = self.score
