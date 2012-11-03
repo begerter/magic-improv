@@ -15,3 +15,5 @@ class Board(object):
     background = background.convert()
     background.fill((250,0,0))
     self.screen.blit(background, (0,0))
+
+   
