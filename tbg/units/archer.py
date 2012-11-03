@@ -4,3 +4,4 @@ class Archer(Unit):
     super(Archer, self).__init__(image="bowdude.png", **kwargs)
     self.side = 0
     self.range = 2
+    self.name = "Archer"

@@ -12,6 +12,8 @@ class Unit(pygame.sprite.Sprite):
     self.rect = pygame.rect.Rect((0,0), self.image.get_size())
     self.total_movement = 3
     self.range    = 1
+    self.total_health = 10
+    self.health   = 10
     self.reset()
     self.move(loc)
   def move(self, loc):
@@ -21,4 +23,9 @@ class Unit(pygame.sprite.Sprite):
   def reset(self):
     self.movement = self.total_movement
     self.attacked = False
+  def damage(self):
+    self.health -= 1
+    if not self.health:
+      self.rec.topleft = self.board.pos((10,10))
+      del self.board.units[sel.loc]
 
