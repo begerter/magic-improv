@@ -29,9 +29,6 @@ class Board(object):
       pygame.draw.line(self.background, (0,0,0), (0, i), (size[0], i))
   def update(self, **kwargs):
     self.mouse.tick()
-    for event in pygame.event.get():
-      if event.type == QUIT:
-        exit(0)
     pos = self.snap(self.mouse.pos)
     loc = self.loc(pos)
     for i in range(0, 2):
