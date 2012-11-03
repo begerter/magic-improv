@@ -1,14 +1,31 @@
+from __future__ import division
 import pygame
 from pygame.locals import *
 import os
 import heapq
 from .base import Base
+from .sand import Sand
+from .grass import Grass
+from .water import Water
+
+TERRAIN = (
+  Grass, Grass, Grass, Grass, Sand , Water, Water, Water, Water, Water,
+  Grass, Grass, Grass, Grass, Sand , Water, Sand , Water, Water, Water,
+  Grass, Grass, Grass, Grass, Sand , Water, Water, Water, Water, Water,
+  Grass, Grass, Grass, Grass, Sand , Sand , Sand , Water, Water, Water,
+  Grass, Grass, Grass, Grass, Sand , Sand , Sand , Sand , Sand , Sand ,
+  Grass, Sand , Sand,  Sand , Grass, Sand , Sand , Sand , Sand , Sand ,
+  Grass, Sand , Water, Sand , Grass, Grass, Grass, Sand , Sand , Sand ,
+  Grass, Sand , Sand , Sand , Grass, Grass, Grass, Grass, Grass, Grass,
+  Grass, Grass, Grass, Grass, Grass, Grass, Sand , Grass, Grass, Grass,
+  Grass, Grass, Grass, Grass, Grass, Grass, Sand , Grass, Grass, Grass,
+)
 
 class Terrain(object):
   def __init__(self, board, **kwargs):
     super(Terrain, self).__init__(**kwargs)
-    self.table = dict( ((x,y), Base(loc=(x,y),cost=1,board=board,image="base_terrain.png"))
-                      for x in range(10) for y in range(10) )
+    self.table = dict( ((i%10,i//10), type(loc=(i%10,i//10),board=board))
+                      for (i, type) in enumerate(TERRAIN) )
     self.renderer = pygame.sprite.RenderPlain(tuple(self.table.values()))
     self.board    = board
   def clear(self):
@@ -25,6 +42,7 @@ class Terrain(object):
         if loc not in self.table: continue
         if self.table[loc].over[1]: continue
         if loc in self.board.units and self.board.units[loc].side != side: continue
+        if self.table[loc].cost == -1: continue
         self.table[loc].movable(m)
         if m < move:
           m += self.table[loc].cost

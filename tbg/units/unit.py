@@ -13,7 +13,7 @@ class Unit(pygame.sprite.Sprite):
     self.total_movement = 3
     self.range    = 1
     self.total_health = 10
-    self.health   = 10
+    self.health   = self.total_health
     self.reset()
     self.move(loc)
   def move(self, loc):
@@ -26,6 +26,6 @@ class Unit(pygame.sprite.Sprite):
   def damage(self):
     self.health -= 1
     if not self.health:
-      self.rec.topleft = self.board.pos((10,10))
-      del self.board.units[sel.loc]
+      self.rect.topleft = self.board.pos((10,10))
+      del self.board.units[self.loc]
 
