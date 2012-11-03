@@ -3,17 +3,17 @@ import os
 loaded = {}
 
 class Unit(pygame.sprite.Sprite):
-  def __init__(self, board, image, loc, **kwargs):
+  def __init__(self, board, image, loc, health=10, move=3, range=1, **kwargs):
     super(Unit, self).__init__(**kwargs)
     self.board = board
     if image not in loaded:
       loaded[image] = pygame.image.load(os.path.join("assets", image))
     self.image = loaded[image]
     self.rect = pygame.rect.Rect((0,0), self.image.get_size())
-    self.total_movement = 3
-    self.range    = 1
-    self.total_health = 10
-    self.health   = 2 #self.total_health
+    self.total_movement = move
+    self.range    = range
+    self.total_health = health
+    self.health   = self.total_health
     self.reset()
     self.move(loc)
   def move(self, loc):
