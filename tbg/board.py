@@ -19,6 +19,7 @@ HEIGHT= 1
 UNITS = (((0,0),), Protag), (((0,1),), Archer), (((1,1), (3,2)), Dude), (((4,4), (5,5), (2,3)), Zombie), (((6,6),), Mullet)
 
 END_TURN = pygame.image.load(os.path.join("assets", "end.png"))
+
 class endButton(pygame.sprite.Sprite):
   def __init__(self):
     super(endButton, self).__init__()
