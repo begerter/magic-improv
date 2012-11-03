@@ -52,7 +52,9 @@ class Player(pygame.sprite.Sprite):
 
         self.actions = [0,0]
         self.isDead = False
-
+        self.won = False
+        self.oneJump = False
+        
     def update(self, dt, game):
         # take a copy of the current position of the player before movement for
         # use in movement collision response
@@ -60,6 +62,17 @@ class Player(pygame.sprite.Sprite):
 
         # handle the player movement left/right keys
         for event in pygame.event.get():
+
+            # if the player's allowed to let them jump with the spacebar; note that
+            # wall-jumping could be allowed with an additional "touching a wall"
+            # flag
+            if (self.resting or self.oneJump) and event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+#                game.jump.play()
+                # we jump by setting the player's velocity to something large going
+                # up (positive Y is down the screen)
+                self.dy = -700
+                self.oneJump = not self.oneJump
+
             if event.type == pygame.KEYUP and event.key == pygame.K_LEFT:
                 self.actions[0] = 0
             if event.type == pygame.KEYUP and event.key == pygame.K_RIGHT:
@@ -77,14 +90,7 @@ class Player(pygame.sprite.Sprite):
                 self.direction = 1
                 self.actions[1] = 1
 
-            # if the player's allowed to let them jump with the spacebar; note that
-            # wall-jumping could be allowed with an additional "touching a wall"
-            # flag
-            if self.resting and event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-#                game.jump.play()
-                # we jump by setting the player's velocity to something large going
-                # up (positive Y is down the screen)
-                self.dy = -500
+
         if self.actions[0]:
             self.rect.x -= 300 * dt
             self.image = self.left_image
@@ -94,7 +100,6 @@ class Player(pygame.sprite.Sprite):
             self.rect.x += 300 * dt
             self.image = self.right_image
             self.direction = 1
-
 
 
         # add gravity on to the currect vertical speed
@@ -132,6 +137,11 @@ class Player(pygame.sprite.Sprite):
                 new.top = cell.bottom
                 self.dy = 0
 
+        for cell in game.tilemap.layers['triggers'].collide(new, 'exit'):
+            quit = cell['exit']
+            if '' in quit:
+                print 'here'
+                self.won = True
         # re-focus the tilemap viewport on the player's new position
         game.tilemap.set_focus(new.x, new.y)
 
@@ -158,27 +168,20 @@ class Game(minigame.Minigame):
         for enemy in self.tilemap.layers['triggers'].find('enemy'):
             Enemy((enemy.px, enemy.py), self.enemies)
 
-
     def exit(self, bool):
         pygame.mouse.set_visible(1)
         #throw back to master
         #clear screen
 
     def update(self, dt):
-        '''
         if self.player.won:
             return exit(True)
-        '''    
+        
         if self.player.isDead:
             return exit(False)
         
         self.tilemap.update(dt / 1000., self)
-#        self.player.update(dt, self)
-#        for enemy in self.enemies:
-#            enemy.update(dt, self)
 
-        #draw()
-        #is called by master
 
     def draw(self):
         self.screen.blit(self.background, (0,0))
