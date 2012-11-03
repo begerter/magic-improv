@@ -41,37 +41,47 @@ class Board(object):
     self.selected = None
     self.terrain.clear()
   def update(self, result=None, **kwargs):
-    try:
-      self.mouse.tick()
-      loc = self.loc(self.mouse.pos)
-      for i in range(0, 2):
-        if self.mouse.clicked(i):
-          if self.selected == loc:
-            self.clearSelection()
-          elif self.selected is None and loc in self.units:
-            self.selected = loc
-            self.terrain.select(loc)
-          elif loc in self.units and self.units[self.selected].side == 0 and self.units[loc].side == 1:
-            if sum(abs(i-j) for (i,j) in zip(self.selected, loc)) != self.units[self.selected].range: continue
-            result = (self.units[self.selected], self.units[loc])
-            self.clearSelection()
-            return result
-          elif loc in self.units:
-            self.clearSelection()
-            self.selected = loc
-            self.terrain.select(loc)
-          elif self.selected and self.units[self.selected].side == 0 and loc in self.terrain.table and self.terrain.table[loc].over[1]:
-            self.units[self.selected].move(loc)
-            self.units[loc] = self.units[self.selected]
-            del self.units[self.selected]
-            self.clearSelection()
-      self.terrain.update()
-      self.unitsr.update()
-    finally:
-      # eat queue becuase why not
-      for event in pygame.event.get():
-        if event.type == QUIT:
-          raise Exception("Quitting")
+    if result is None:
+      try:
+        self.mouse.tick()
+        loc = self.loc(self.mouse.pos)
+        while True:
+        #for i in range(0, 2):
+          if self.mouse.clicked(0):
+            if self.selected == loc:
+              self.clearSelection()
+            elif self.selected is None and loc in self.units:
+              self.selected = loc
+              self.terrain.select(loc)
+            elif loc in self.units and self.units[self.selected].side == 0 and self.units[loc].side == 1:
+              if sum(abs(i-j) for (i,j) in zip(self.selected, loc)) != self.units[self.selected].range: break
+              if self.units[self.selected].attacked: break
+              self.result = (self.units[self.selected], self.units[loc])
+              self.units[self.selected].movement = 0
+              self.units[self.selected].attacked = True
+              self.clearSelection()
+              return self.result
+            elif loc in self.units:
+              self.clearSelection()
+              self.selected = loc
+              self.terrain.select(loc)
+            elif self.selected and self.units[self.selected].side == 0 and loc in self.terrain.table and self.terrain.table[loc].over[1]:
+              self.units[self.selected].move(loc)
+              self.units[loc] = self.units[self.selected]
+              del self.units[self.selected]
+              self.clearSelection()
+          break
+        self.terrain.update()
+        self.unitsr.update()
+      finally:
+        # eat queue becuase why not
+        for event in pygame.event.get():
+          if event.type == QUIT:
+            raise Exception("Quitting")
+    elif result:
+      self.result[1].damage()
+    else:
+      self.result[0].damage()
   def snap(self, pos):
     return tuple(i - (i % j) for (i, j) in zip(pos, self.div))
   def loc(self, pos):
@@ -94,4 +104,5 @@ class Board(object):
       self.screen.blit(text, (610,180))
       text = font.render("Range : %d" % sunit.range, 1, (255,255,255))
       self.screen.blit(text, (610,220))
+  
 
