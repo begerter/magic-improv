@@ -27,7 +27,7 @@ class Transfer():
         self.screen.blit(self.background,(0,0))
 
     def update(self, **kwargs):
-        counter += 1
-        if counter > self.increment*4:
+        self.counter += 1
+        if self.counter > self.increment*4:
             return self.next
         

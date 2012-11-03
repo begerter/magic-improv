@@ -45,14 +45,21 @@ class Manager:
                 self.status = _TBG
                 self.currWait = self.wait
             elif self.status == _TBG and self.catcher != None:
-                print "switching to mini"
+                print "switching to transfer"
                 self.easywin = EasyWin(self.screen)
                 self.status = _TRANSFER
-                self.current = self.minigames[random.randint(0,len(self.minigames)-1)]
+                select = self.minigames[random.randint(0,len(self.minigames)-1)]
+                self.current = Transfer(self.screen,select[1][random.randint(0,len(select[1])-1)],select[0])
+                #self.current = self.minigames[random.randint(0,len(self.minigames)-1)]
                 #self.status = _MINI
                 self.currWait = self.wait
         else:
             #clear queue
-            self.currWait -= 1
+            #self.currWait -= 1
+            result = self.current.update()
+            if result:
+                print "switching to mini"
+                self.current = result
+                self.status = _MINI
             pygame.event.get()
         
