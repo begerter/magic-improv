@@ -17,10 +17,20 @@ def load_image(name, colorkey=None):
         image.set_colorkey(colorkey, RLEACCEL)
     return image, image.get_rect()
 
+def load_sliced_sprites(self, w, h, filename):
+    images = []
+    master_image = pygame.image.load(os.path.join('assets', filename)).convert_alpha()
+
+    master_width, master_height = master_image.get_size()
+    for i in xrange(int(master_width/w)):
+    	images.append(master_image.subsurface((i*w,0,w,h)))
+    return images,images[0].get_rect()
+
+
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image, self.rect = load_image('dude.png', -1)
+        self.images, self.rect = load_sliced_sprites(self,254,288,'duck.png')
         screen = pygame.display.get_surface()
         self.area = screen.get_rect()
         self.rect.topleft = 10, 10
@@ -29,7 +39,9 @@ class Player(pygame.sprite.Sprite):
         self.down = False
         self.left = False
         self.right = False
-        
+        self.frame = 0
+        self.count = 0
+        self.countmax = 5
     def update(self):
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -52,14 +64,25 @@ class Player(pygame.sprite.Sprite):
                     self.up = True
                 if event.key == K_DOWN:
                     self.down = True
+        if self.left or self.right or self.up or self.down:
+            self.count = (self.count + 1) % self.countmax
         if self.left and self.rect.left > 0:
                 self.rect.move_ip(-1 * self.moveRate, 0)
+                if self.count == 0:
+                    self.frame = (self.frame + 1) % len(self.images)
         if self.right and self.rect.right < self.area.right:
                 self.rect.move_ip(self.moveRate, 0)
+                if self.count == 0:
+                    self.frame = (self.frame + 1) % len(self.images)
         if self.up and self.rect.top > 0:
                 self.rect.move_ip(0, -1 * self.moveRate)
+                if self.count == 0:
+                    self.frame = (self.frame + 1) % len(self.images)
         if self.down and self.rect.bottom < self.area.bottom:
-                self.rect.move_ip(0, self.moveRate)          
+                self.rect.move_ip(0, self.moveRate)
+                if self.count == 0:
+                    self.frame = (self.frame + 1) % len(self.images)
+        self.image = self.images[self.frame]
 class Runner(object):
     def __init__(self, screen, clock, **kwargs):
         self.player = Player()
