@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="tiles" tilewidth="32" tileheight="32">
+  <image source="assets/platformerMaps/tiles.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="2" name="triggers" tilewidth="32" tileheight="32">
+  <image source="assets/platformerMaps/triggers.png" width="256" height="128"/>
+  <tile id="0">
+   <properties>
+    <property name="blockers" value="tr"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="blockers" value="lr"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="blockers" value="tlr"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="blockers" value="lrb"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="blockers" value="tl"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="blockers" value="bl"/>
+   </properties>
+  </tile>
+  <tile id="10">
+   <properties>
+    <property name="blockers" value="br"/>
+   </properties>
+  </tile>
+  <tile id="11">
+   <properties>
+    <property name="blockers" value="tb"/>
+   </properties>
+  </tile>
+  <tile id="16">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </tile>
+  <tile id="17">
+   <properties>
+    <property name="blockers" value="l"/>
+   </properties>
+  </tile>
+  <tile id="18">
+   <properties>
+    <property name="blockers" value="r"/>
+   </properties>
+  </tile>
+  <tile id="19">
+   <properties>
+    <property name="blockers" value="b"/>
+   </properties>
+  </tile>
+  <tile id="20">
+   <properties>
+    <property name="blockers" value="trb"/>
+   </properties>
+  </tile>
+  <tile id="21">
+   <properties>
+    <property name="blockers" value="tlb"/>
+   </properties>
+  </tile>
+  <tile id="25">
+   <properties>
+    <property name="blockers" value="tlrb"/>
+   </properties>
+  </tile>
+  <tile id="26">
+   <properties>
+    <property name="player" value=""/>
+   </properties>
+  </tile>
+  <tile id="27">
+   <properties>
+    <property name="enemy" value=""/>
+   </properties>
+  </tile>
+  <tile id="28">
+   <properties>
+    <property name="exit" value=""/>
+   </properties>
+  </tile>
+  <tile id="29">
+   <properties>
+    <property name="reverse" value=""/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="set" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztlkEOgCAQA+H/n/a8B2OCQEeZSTg2WFsbe2ut/+R8HX2w0AeLE32Qd472PKPoo+rTXTMPFu4VC31Ufbpr5sHCvWKhj6pPd808WLhXLPRR9emumQcL94qFPqr+qWurO2keLFZmvGvXiPs5ij6qPp2tebB4+3/1dHZxYh5k7nyMdCj5PtL3zyL1Pc7Oc7Q/xHMBpUQBKg==
+  </data>
+ </layer>
+ <layer name="triggers" width="50" height="50" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztmsEKgzAQRJceC720tYWl0v//yxq8hBCjdpM4JvNgDkKMDjuuC6oiMpxcOukp5+ch9IFErz601I0Y2eNDpQ0f94hQ6PX5iIGQNasPlKwxV1iwX2HRsw+/z6Jkred6IMJ+hUULPlzfsfp4T7p5emW4r73k8IFArz4QMhSjlXo46GMG5d3IemDB+QoL+pjZmrXSmWQ9sCjho3Zfc3Mfv3NiwfkKi60+vsHxmFir3prwvFJY56s11aLlXLksqKdR0t8Aj8hRyFI9/snQkXN8i/8zfCpc7yrLtbwY9nU+NLF3bumKLPv+APUvGRE=
+  </data>
+ </layer>
+</map>

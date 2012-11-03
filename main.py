@@ -20,11 +20,25 @@ screen.blit(background, (0,0))
 
 
 #main loop
-while True:
-    clock.tick(60)
-    
-    manager.update()
-    manager.draw(screen)
+try:
+    running = True
+    while running:
+        clock.tick(60)
 
-    pygame.display.flip()
+        if pygame.event.peek(QUIT):
+            running = False
+            break
+            
+        manager.update()
+        manager.draw(screen)
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                running = False
+                break
+
+        pygame.display.flip()
+    pygame.quit()
+finally:
+    pygame.quit()
 

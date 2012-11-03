@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import pygame
 import minigame
 from tbg.board import Board
@@ -26,3 +27,38 @@ class Manager:
             self.status = _TBG
             # pass along results to board somehow?
         
+=======
+import pygame
+import minigame
+from tbg.board import Board
+from easywin import EasyWin
+
+_TBG = "tbg"
+_MINI = "mini"
+
+class Manager:
+    def __init__(self, screen, clock, **kwargs):
+        #self.turns = turns()
+        self.screen = screen
+        self.status = _MINI
+        self.minigames = []
+        self.board = Board(screen=screen, clock=clock)
+        self.easywin = EasyWin(screen)
+        self.current = self.easywin
+        self.catcher = None
+
+    def draw(self, screen):
+        self.current.draw()
+
+    def update(self):
+        self.catcher = self.current.update(result=self.catcher)
+        if self.status == _MINI and self.catcher != None:
+            self.current.reset()
+            self.current = self.board
+            self.status = _TBG
+        elif self.status == _TBG and self.catcher != None:
+            self.easywin = EasyWin(self.screen)
+            self.current = self.easywin
+            self.status = _MINI
+        
+>>>>>>> 0ad004d8269395f3a939edd5b672b2927d8d2a59
