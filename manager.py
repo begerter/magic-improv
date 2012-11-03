@@ -9,6 +9,7 @@ _MINI = "mini"
 class Manager:
     def __init__(self, screen, clock, **kwargs):
         #self.turns = turns()
+        self.screen = screen
         self.status = _MINI
         self.minigames = []
         self.board = Board(screen=screen, clock=clock)
@@ -21,9 +22,11 @@ class Manager:
 
     def update(self):
         self.catcher = self.current.update(result=self.catcher)
-        if self.status == _MINI and catcher != None:
+        if self.status == _MINI and self.catcher != None:
             self.current = self.board
             self.status = _TBG
-        
-            # pass along results to board somehow?
+        elif self.status == _TBG and self.catcher != None:
+            self.easywin = EasyWin(self.screen)
+            self.current = self.easywin
+            self.status = _MINI
         
