@@ -15,6 +15,7 @@ class Base(pygame.sprite.Sprite):
     self.image = loaded[image]
     self.rect = pygame.rect.Rect(board.pos(loc), self.image.get_size())
     self.loc = loc
+    self.left = 0
     self.clear()
   def clear(self):
     self.over = [False, False, False]

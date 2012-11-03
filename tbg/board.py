@@ -23,8 +23,8 @@ class Board(object):
     self.mouse  = Mouse()
     self.selected = None
     self.div = div
-    self.units = dict( (loc, type(loc=loc,board=self)) for (group, type) in UNITS for loc in group)
     self.terrain = Terrain(self)
+    self.units = dict( (loc, type(loc=loc,board=self)) for (group, type) in UNITS for loc in group)
     self.unitsr   = pygame.sprite.RenderPlain(tuple(self.units.values()))
   def genBackground(self, div):
     self.background = pygame.Surface((600,600))
