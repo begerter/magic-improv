@@ -11,9 +11,13 @@ class Unit(pygame.sprite.Sprite):
     self.image = loaded[image]
     self.rect = pygame.rect.Rect((0,0), self.image.get_size())
     self.move(loc)
-    self.movement = 3
+    self.total_movement = 3
     self.range    = 1
+    self.reset()
   def move(self, loc):
     self.rect.topleft = self.board.pos(loc)
     self.loc = loc
+  def reset(self):
+    self.movement = self.total_movement
+    self.attacked = False
 
