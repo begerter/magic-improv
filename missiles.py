@@ -78,8 +78,10 @@ class Missile(pygame.sprite.Sprite):
         self.area = screen.get_rect()
         self.rect.topleft = screen.get_width(), random.randint(0,screen.get_height() - self.rect.height)
         self.moveRate = speed
+        self.v = 0.0
     def update(self):
-        self.rect.move_ip(-1 * self.moveRate, 0)
+        self.v += random.random()-0.5
+        self.rect.move_ip(-1 * self.moveRate, self.v*self.moveRate)
 class Missiles(object):
     def __init__(self, screen, clock, **kwargs):
         self.player = Player()
@@ -124,7 +126,7 @@ class Missiles(object):
                 self.reset()
                 return False
         self.timer += 1
-        self.missiles.append(Missile(random.randint(2,5) + 0.1*random.randint(1,self.timer)))
+        self.missiles.append(Missile(random.randint(2,5) + 0.02*random.randint(1,self.timer)))
         for missile in self.missiles:
             missile.update()
             if missile.rect.right < 0:
