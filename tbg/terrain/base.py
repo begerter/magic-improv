@@ -3,7 +3,7 @@ from pygame.locals import *
 import os
 loaded = {}
 
-COLORS = ((0,0,250), (0,250,0), (250,250,0))
+COLORS = ((0,0,250,120), (0,250,0,120), (250,250,0,120))
 
 class Base(pygame.sprite.Sprite):
   def __init__(self, loc, cost, board, image, **kwargs):
@@ -17,6 +17,10 @@ class Base(pygame.sprite.Sprite):
     self.loc = loc
     self.left = 0
     self.clear()
+    self.even = True
+  def update(self):
+    super(Base, self).update()
+    self.even = not self.even
   def clear(self):
     self.over = [False, False, False]
   def enter(self, num):
@@ -34,8 +38,8 @@ class Base(pygame.sprite.Sprite):
     else: return
     if i == 1 and self.loc in self.board.units: return
     color = COLORS[i]
-    select = pygame.Surface(tuple(i-1 for i in self.board.div))
+    select = pygame.Surface(tuple(i-1 for i in self.board.div),flags=SRCALPHA)
     select.convert()
     select.fill(color)
-    screen.blit(select, self.board.pos(self.loc), special_flags = BLEND_ADD)
+    screen.blit(select, self.board.pos(self.loc))
     return i
