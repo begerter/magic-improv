@@ -22,8 +22,9 @@ class Base(pygame.sprite.Sprite):
     self.over[num] = True
   def select(self):
     self.enter(0)
-  def movable(self):
+  def movable(self, left):
     self.enter(1)
+    self.left = left
   def attackable(self):
     self.enter(2)
   def overlay(self, screen):
@@ -31,7 +32,7 @@ class Base(pygame.sprite.Sprite):
       if v: break
     else: return
     color = COLORS[i]
-    select = pygame.Surface(self.board.div)
+    select = pygame.Surface(tuple(i-1 for i in self.board.div))
     select.convert()
     select.fill(color)
     screen.blit(select, self.board.pos(self.loc), special_flags = BLEND_ADD)
