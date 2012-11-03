@@ -3,6 +3,8 @@ import minigame
 from missiles import Missiles
 from easywin import EasyWin
 from tbg.board import Board
+from whackamullet import WhackAMullet
+from freeze import Freeze
 import random
 
 _TBG = "tbg"
@@ -16,6 +18,8 @@ class Manager:
         self.minigames = []
         self.board = Board(screen=screen, clock=clock)
         self.minigames.append(Missiles(screen=screen,clock=clock))
+        self.minigames.append(WhackAMullet(screen=screen,clock=clock))
+        self.minigames.append(Freeze(screen=screen,clock=clock))
         self.minigames.append(EasyWin(screen))
         self.current = self.board
         self.catcher = None
