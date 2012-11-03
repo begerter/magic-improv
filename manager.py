@@ -21,12 +21,12 @@ class Manager:
         self.status = _TBG
         self.minigames = []
         self.board = Board(screen=screen, clock=clock)
-        self.minigames.append((Missiles(screen=screen,clock=clock),("Dodge")))
-        self.minigames.append((WhackAMullet(screen=screen,clock=clock), ("Kill")))
-        self.minigames.append((Freeze(screen=screen,clock=clock), ("Dodge", "Kill", "Jump", "Type")))
-        self.minigames.append((Platformer(clock=clock,screen=screen), ("Jump")))
+        self.minigames.append((Missiles(screen=screen,clock=clock),["Dodge"]))
+        self.minigames.append((WhackAMullet(screen=screen,clock=clock), ["Kill"]))
+        self.minigames.append((Freeze(screen=screen,clock=clock), ["Dodge", "Kill", "Jump", "Type"]))
+        self.minigames.append((Platformer(clock=clock,screen=screen), ["Jump"]))
         #self.minigames.append(EasyWin(screen))
-        self.minigames.append((ClickClack(screen), ("Type")))
+        self.minigames.append((ClickClack(screen), ["Type"]))
         self.current = self.board
         self.catcher = None
         self.wait = 7
@@ -57,9 +57,10 @@ class Manager:
             #clear queue
             #self.currWait -= 1
             result = self.current.update()
-            if result:
+            pygame.event.get()
+            if result != None:
                 print "switching to mini"
                 self.current = result
                 self.status = _MINI
-            pygame.event.get()
+
         
